@@ -48,7 +48,7 @@ export default function OverviewDashboard() {
         <Spinner />
       ) : data ? (
         <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-3">
             <StatCard
               label={`Sales ${periodWord}`}
               value={money(data.sales.revenue)}
@@ -57,7 +57,7 @@ export default function OverviewDashboard() {
               )} suits`}
             />
             <StatCard
-              label={`Profit ${periodWord}`}
+              label={`Gross profit ${periodWord}`}
               value={money(data.sales.profit)}
               tone={data.sales.profit >= 0 ? "positive" : "negative"}
               hint={
@@ -65,6 +65,22 @@ export default function OverviewDashboard() {
                   ? `after ${money(data.sales.discount)} discount`
                   : "sell price − cost price"
               }
+            />
+            <StatCard
+              label={`Expenses ${periodWord}`}
+              value={money(data.expenses?.amount || 0)}
+              tone="negative"
+              hint={`${num(data.expenses?.count || 0)} entries`}
+            />
+            <StatCard
+              label={`Net profit ${periodWord}`}
+              value={money(data.sales.netProfit ?? data.sales.profit)}
+              tone={
+                (data.sales.netProfit ?? data.sales.profit) >= 0
+                  ? "positive"
+                  : "negative"
+              }
+              hint="gross profit − expenses"
             />
             <StatCard
               label={`Cloth received ${periodWord}`}

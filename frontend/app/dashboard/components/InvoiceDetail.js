@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/app/api/api";
 import { useFetch } from "@/app/shared/useFetch";
 import { money, num, fmtDateTime } from "@/app/shared/format";
+import { SHOP } from "@/app/shared/shop";
 import { Spinner, ErrorNote } from "./ui";
 
 export default function InvoiceDetail({ id }) {
@@ -81,11 +82,26 @@ export default function InvoiceDetail({ id }) {
         id="bill"
         className="mx-auto max-w-2xl rounded-xl border border-neutral-300 bg-white p-6 text-neutral-900 sm:p-8"
       >
-        <div className="text-center">
-          <h2 className="text-2xl font-bold tracking-tight">Cloth Shop</h2>
-          <p className="text-xs text-neutral-500">
-            Rimal Center, Kashmiri Gate — Lahore · 042-37658388
-          </p>
+        <div className="flex flex-col items-center gap-2 text-center">
+          <img
+            src={SHOP.logo}
+            alt={`${SHOP.name} logo`}
+            className="h-20 w-20 rounded-full"
+          />
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">{SHOP.name}</h2>
+            <p className="text-sm font-medium text-neutral-700">{SHOP.fullName}</p>
+            <p className="mt-1 text-xs text-neutral-500">{SHOP.address}</p>
+            <p className="text-xs text-neutral-500">
+              {SHOP.phones.map((p, i) => (
+                <span key={p}>
+                  {i > 0 ? " · " : ""}
+                  {i === 0 ? "WhatsApp: " : ""}
+                  {p}
+                </span>
+              ))}
+            </p>
+          </div>
         </div>
 
         <div className="mt-5 flex justify-between border-y border-neutral-300 py-2 text-sm">

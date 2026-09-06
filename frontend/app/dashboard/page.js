@@ -1,7 +1,8 @@
 import OverviewDashboard from "./components/OverviewDashboard";
+import { SHOP } from "@/app/shared/shop";
 
 export const metadata = {
-  title: "Overview · Cloth Shop",
+  title: `Overview · ${SHOP.name}`,
 };
 
 export default function DashboardPage() {

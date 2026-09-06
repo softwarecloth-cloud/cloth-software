@@ -11,6 +11,7 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import stockRoutes from "./routes/stockRoutes.js";
 import invoiceRoutes from "./routes/invoiceRoutes.js";
+import expenseRoutes from "./routes/expenseRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 
 const app = express();
@@ -59,6 +60,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/stock", stockRoutes);
 app.use("/api/v1/invoices", invoiceRoutes);
+app.use("/api/v1/expenses", expenseRoutes);
 app.use("/api/v1/reports", reportRoutes);
 
 // 404

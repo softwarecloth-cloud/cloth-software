@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./AuthContext/AuthContext";
+import { SHOP } from "./shared/shop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Cloth Software",
-  description: "Cloth Software — account & authentication",
+  title: SHOP.name,
+  description: `${SHOP.name} — account & authentication`,
 };
 
 export default function RootLayout({ children }) {

@@ -1,6 +1,7 @@
 import Invoice from "../models/Invoice.js";
 import StockReceipt from "../models/StockReceipt.js";
 import Product from "../models/Product.js";
+import Expense from "../models/Expense.js";
 import { resolveRange } from "../utils/dateRange.js";
 
 /**
@@ -22,8 +23,15 @@ export const dashboard = async (req, res) => {
     const bucketUnit = resolved === "year" ? "month" : "day";
     const bucketFormat = resolved === "year" ? "%Y-%m" : "%Y-%m-%d";
 
-    const [salesAgg, receiptAgg, products, breakdown, topProducts, recentInvoices] =
-      await Promise.all([
+    const [
+      salesAgg,
+      receiptAgg,
+      expenseAgg,
+      products,
+      breakdown,
+      topProducts,
+      recentInvoices,
+    ] = await Promise.all([
         Invoice.aggregate([
           { $match: { soldAt: { $gte: start, $lte: end } } },
           {
@@ -46,6 +54,16 @@ export const dashboard = async (req, res) => {
               quantity: { $sum: "$quantity" },
               cost: { $sum: "$totalCost" },
               batches: { $sum: 1 },
+            },
+          },
+        ]),
+        Expense.aggregate([
+          { $match: { spentAt: { $gte: start, $lte: end } } },
+          {
+            $group: {
+              _id: null,
+              amount: { $sum: "$amount" },
+              count: { $sum: 1 },
             },
           },
         ]),
@@ -97,6 +115,7 @@ export const dashboard = async (req, res) => {
       discount: 0,
     };
     const received = receiptAgg[0] || { quantity: 0, cost: 0, batches: 0 };
+    const expenses = expenseAgg[0] || { amount: 0, count: 0 };
 
     const stock = products.reduce(
       (acc, p) => {
@@ -122,11 +141,16 @@ export const dashboard = async (req, res) => {
         suitsSold: sales.suits,
         discount: sales.discount,
         avgInvoice: sales.invoices ? sales.revenue / sales.invoices : 0,
+        netProfit: sales.profit - expenses.amount,
       },
       received: {
         quantity: received.quantity,
         cost: received.cost,
         batches: received.batches,
+      },
+      expenses: {
+        amount: expenses.amount,
+        count: expenses.count,
       },
       stock: {
         units: stock.units,

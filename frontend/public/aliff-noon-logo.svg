@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Aliff Noon logo">
+  <defs>
+    <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#e2231a"/>
+      <stop offset="0.45" stop-color="#f0661b"/>
+      <stop offset="1" stop-color="#f6b21b"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="200" cy="200" r="200" fill="#1c1613"/>
+
+  <!-- Stylised "الفن" (al-fann — "the art"), drawn as a rising flame -->
+  <g fill="url(#flame)">
+    <path d="M243 66c8 26 4 52-9 78-11 22-27 42-30 67-2 18 6 35 22 43 5 2 4 9-2 9-24 1-44-16-49-39-6-27 6-53 21-75 16-24 33-49 33-79 0-3 4-4 5-1 4 8 7 16 9 26" opacity="0.15"/>
+    <path d="M240 70c9 24 6 49-6 73-12 24-31 45-35 72-4 26 12 50 37 56 8 2 7 13-2 13-33 1-60-24-63-56-3-32 14-61 33-86 16-22 31-45 31-72 0-6 8-7 10-1l3 8"/>
+    <path d="M150 205c-14 15-22 36-16 56 7 24 30 40 55 39 7 0 8 10 1 12-33 8-67-11-79-42-9-24-3-52 14-71 8-9 21-11 30-5 6 4 6 8-3 12-1 0-1 1-2 2"/>
+    <circle cx="176" cy="243" r="9"/>
+  </g>
+
+  <text x="200" y="330" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="46" font-weight="700" letter-spacing="4">
+    <tspan fill="#f6b21b">ALIFF </tspan><tspan fill="#e2231a">NOON</tspan>
+  </text>
+</svg>

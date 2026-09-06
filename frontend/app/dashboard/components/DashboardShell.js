@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/app/AuthContext/AuthContext";
+import { SHOP } from "@/app/shared/shop";
 
 const NAV = [
   { href: "/dashboard", label: "Overview", icon: "grid" },
@@ -11,6 +12,7 @@ const NAV = [
   { href: "/dashboard/receipts", label: "Cloth received", icon: "truck" },
   { href: "/dashboard/billing", label: "New bill", icon: "receipt" },
   { href: "/dashboard/invoices", label: "Invoices", icon: "list" },
+  { href: "/dashboard/expenses", label: "Expenses", icon: "wallet" },
 ];
 
 function Icon({ name, className = "h-5 w-5" }) {
@@ -20,6 +22,7 @@ function Icon({ name, className = "h-5 w-5" }) {
     truck: "M3 6h11v9H3zM14 9h4l3 3v3h-7zM7 18a2 2 0 100-4 2 2 0 000 4zM17 18a2 2 0 100-4 2 2 0 000 4z",
     receipt: "M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4",
     list: "M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01",
+    wallet: "M3 7a2 2 0 012-2h12a2 2 0 012 2M3 7v10a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2H5a2 2 0 01-2-2zM16 12h.01",
   };
   return (
     <svg
@@ -97,8 +100,16 @@ export default function DashboardShell({ children }) {
           >
             <Icon name="list" />
           </button>
-          <Link href="/dashboard" className="text-base font-semibold tracking-tight">
-            Cloth Shop
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 text-base font-semibold tracking-tight"
+          >
+            <img
+              src={SHOP.logo}
+              alt=""
+              className="h-7 w-7 rounded-full"
+            />
+            {SHOP.name}
           </Link>
         </div>
         <div className="flex items-center gap-3">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SHOP } from "./shop";
 
 /**
  * Centered card used by every auth screen (login / signup / forgot / reset).
@@ -11,9 +12,10 @@ export default function AuthCard({ title, subtitle, children, footer }) {
         <div className="mb-6 text-center">
           <Link
             href="/"
-            className="text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100"
+            className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight text-neutral-900 dark:text-neutral-100"
           >
-            Cloth Software
+            <img src={SHOP.logo} alt="" className="h-8 w-8 rounded-full" />
+            {SHOP.name}
           </Link>
         </div>
 
