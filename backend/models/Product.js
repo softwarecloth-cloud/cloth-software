@@ -25,6 +25,24 @@ const productSchema = new mongoose.Schema(
       maxlength: 60,
     },
     description: { type: String, trim: true, maxlength: 200, default: "" },
+    // Reference photos of the cloth — brand catalogue shots, fabric close-ups,
+    // whatever helps identify the design on the shelf. Entirely optional and
+    // uploaded straight to Cloudinary from the browser; we only keep the URL and
+    // its public_id here. Any image format the browser can produce is allowed.
+    images: {
+      type: [
+        {
+          _id: false,
+          url: { type: String, required: true, trim: true },
+          publicId: { type: String, trim: true, default: "" },
+        },
+      ],
+      default: [],
+      validate: {
+        validator: (arr) => !Array.isArray(arr) || arr.length <= 12,
+        message: "A product can have at most 12 images",
+      },
+    },
     costPrice: {
       type: Number,
       required: [true, "Receive (cost) price is required"],

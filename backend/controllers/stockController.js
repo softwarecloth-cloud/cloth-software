@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Product from "../models/Product.js";
 import StockReceipt from "../models/StockReceipt.js";
 import { resolveRange } from "../utils/dateRange.js";
+import { sanitizeImages } from "./productController.js";
 
 // GET /stock?period=month&date=&from=&to=&productId=&search=
 export const listReceipts = async (req, res) => {
@@ -61,6 +62,7 @@ export const createReceipt = async (req, res) => {
       receivedAt,
       lowStockThreshold,
     } = req.body;
+    const images = sanitizeImages(req.body.images);
 
     const qty = Number(quantity);
     const cost = Number(costPrice);
@@ -93,6 +95,14 @@ export const createReceipt = async (req, res) => {
       product.salePrice = sale;
       if (description) product.description = description;
       if (lowStockThreshold !== undefined) product.lowStockThreshold = lowStockThreshold;
+      if (images.length) {
+        // Add any newly uploaded photos to the existing set, skipping repeats.
+        const seen = new Set((product.images || []).map((i) => i.url));
+        product.images = [
+          ...(product.images || []),
+          ...images.filter((i) => !seen.has(i.url)),
+        ].slice(0, 12);
+      }
       await product.save();
     } else {
       product = await Product.create({
@@ -103,6 +113,7 @@ export const createReceipt = async (req, res) => {
         salePrice: sale,
         quantity: qty,
         lowStockThreshold,
+        images,
       });
     }
 

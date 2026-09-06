@@ -122,12 +122,46 @@ export default function InventoryView() {
                     className="border-b border-neutral-100 last:border-0 dark:border-neutral-800"
                   >
                     <td className="px-4 py-3 font-medium">
-                      {p.brand}
-                      {p.description ? (
-                        <span className="block text-xs font-normal text-neutral-400">
-                          {p.description}
+                      <div className="flex items-center gap-3">
+                        {p.images?.length ? (
+                          <a
+                            href={p.images[0].url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="relative shrink-0"
+                            title={`${p.images.length} photo${p.images.length > 1 ? "s" : ""}`}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={p.images[0].url}
+                              alt=""
+                              className="h-10 w-10 rounded-md border border-neutral-200 object-cover dark:border-neutral-700"
+                              loading="lazy"
+                            />
+                            {p.images.length > 1 ? (
+                              <span className="absolute -right-1.5 -top-1.5 rounded-full bg-neutral-900 px-1.5 text-[10px] font-semibold leading-4 text-white dark:bg-white dark:text-neutral-900">
+                                {p.images.length}
+                              </span>
+                            ) : null}
+                          </a>
+                        ) : (
+                          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-dashed border-neutral-200 text-neutral-300 dark:border-neutral-700 dark:text-neutral-600">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <rect x="3" y="3" width="18" height="18" rx="2" />
+                              <circle cx="8.5" cy="8.5" r="1.5" />
+                              <path d="m21 15-5-5L5 21" />
+                            </svg>
+                          </span>
+                        )}
+                        <span>
+                          {p.brand}
+                          {p.description ? (
+                            <span className="block text-xs font-normal text-neutral-400">
+                              {p.description}
+                            </span>
+                          ) : null}
                         </span>
-                      ) : null}
+                      </div>
                     </td>
                     <td className="px-4 py-3 text-neutral-500 dark:text-neutral-400">
                       {p.volumeNo}

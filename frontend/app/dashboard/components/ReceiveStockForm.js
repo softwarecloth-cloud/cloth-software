@@ -5,6 +5,7 @@ import api from "@/app/api/api";
 import { Field } from "@/app/shared/Field";
 import Button from "@/app/shared/Button";
 import { ErrorNote } from "./ui";
+import ImageUploader from "./ImageUploader";
 import { dateInputValue, money } from "@/app/shared/format";
 
 const empty = {
@@ -20,6 +21,7 @@ const empty = {
 
 export default function ReceiveStockForm({ preset, onDone, onCancel }) {
   const [values, setValues] = useState({ ...empty, ...preset });
+  const [images, setImages] = useState([]);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -50,6 +52,7 @@ export default function ReceiveStockForm({ preset, onDone, onCancel }) {
         description: values.description.trim(),
         note: values.note.trim(),
         receivedAt: values.receivedAt,
+        images,
       });
       onDone?.(res.data);
     } catch (err) {
@@ -93,6 +96,8 @@ export default function ReceiveStockForm({ preset, onDone, onCancel }) {
         <Field label="Received on" name="receivedAt" type="date" value={values.receivedAt} onChange={set} />
         <Field label="Note (optional)" name="note" value={values.note} onChange={set} placeholder="Supplier / bill no." />
       </div>
+
+      <ImageUploader value={images} onChange={setImages} disabled={saving} />
 
       <div className="flex gap-2 pt-1">
         <Button type="submit" loading={saving}>

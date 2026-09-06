@@ -5,6 +5,7 @@ import api from "@/app/api/api";
 import { Field } from "@/app/shared/Field";
 import Button from "@/app/shared/Button";
 import { ErrorNote } from "./ui";
+import ImageUploader from "./ImageUploader";
 import { money } from "@/app/shared/format";
 
 /**
@@ -21,6 +22,11 @@ export default function EditProductForm({ product, onDone, onCancel }) {
     quantity: String(product.quantity),
     lowStockThreshold: String(product.lowStockThreshold ?? 3),
   });
+  const [images, setImages] = useState(
+    Array.isArray(product.images)
+      ? product.images.map((i) => ({ url: i.url, publicId: i.publicId || "" }))
+      : []
+  );
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -49,6 +55,7 @@ export default function EditProductForm({ product, onDone, onCancel }) {
         salePrice: sale,
         quantity: qty,
         lowStockThreshold: Number(values.lowStockThreshold) || 0,
+        images,
       });
       onDone?.(res.data);
     } catch (err) {
@@ -83,6 +90,8 @@ export default function EditProductForm({ product, onDone, onCancel }) {
         value={values.quantity}
         onChange={set}
       />
+
+      <ImageUploader value={images} onChange={setImages} disabled={saving} />
       <p className="text-xs text-neutral-500 dark:text-neutral-400">
         Adjust quantity only to correct a miscount — use “Receive cloth” to add a
         new batch. Margin {money(sale - cost)}/suit.

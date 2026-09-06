@@ -33,6 +33,17 @@ export const downloadUrlFor = (url, filename = "") => {
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
+// Some perfectly valid image files reach the browser with an empty or generic
+// MIME type — HEIC/HEIF from iPhones, the odd TIFF or AVIF — so fall back to the
+// file extension before rejecting. Every raster/vector format Cloudinary can
+// ingest is welcome here.
+const IMAGE_EXT =
+  /\.(jpe?g|jfif|png|gif|webp|avif|bmp|svg|svgz|heic|heif|tiff?|ico|jp2|jxl)$/i;
+
+export const isImageFile = (file) =>
+  !!file &&
+  ((file.type || "").startsWith("image/") || IMAGE_EXT.test(file.name || ""));
+
 const uploadToCloudinary = async (file) => {
   if (!cloudName || !uploadPreset) {
     throw new Error("Cloudinary environment variables missing");
@@ -42,8 +53,12 @@ const uploadToCloudinary = async (file) => {
     throw new Error("No file selected");
   }
 
-  if (!file.type.startsWith("image/")) {
-    throw new Error("Only image uploads are allowed");
+  if (!isImageFile(file)) {
+    throw new Error(`"${file.name || "file"}" is not an image`);
+  }
+
+  if (file.size === 0) {
+    throw new Error(`"${file.name || "file"}" is empty`);
   }
 
   if (file.size > MAX_FILE_SIZE) {
@@ -65,7 +80,7 @@ const uploadToCloudinary = async (file) => {
 
   try {
     const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+      `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
       {
         method: "POST",
         body: formData,
